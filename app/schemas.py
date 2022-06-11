@@ -1,7 +1,9 @@
 
+from cProfile import Profile
 from typing import Optional
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
+from fastapi import UploadFile,File,Form
 
 from app.models import User   
 
@@ -17,7 +19,10 @@ class PostCreate(PostBase):
 class UserOut(BaseModel):
     id:int
     email: EmailStr
-    created_at: datetime
+    firstName: str
+    lastName: str
+    profileImage: str
+
     class Config:
         orm_mode = True
 
@@ -32,8 +37,14 @@ class Post(PostBase):
         orm_mode = True
 
 class UserCreate(BaseModel):
-    email: EmailStr
+    email: EmailStr 
     password:str
+    confirmPassword:str
+    firstName:str
+    lastName:str
+    phoneNumber:int
+
+    
 
 
 
@@ -47,3 +58,19 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     id:Optional[str] = None
+
+
+class ForgotPasword(BaseModel):
+    email:EmailStr
+    class Config:
+        orm_mode = True
+
+class Password(BaseModel):
+    email:Optional[EmailStr] = None
+    password:str
+    confirmPassword:Optional[str] = None
+
+
+
+
+   

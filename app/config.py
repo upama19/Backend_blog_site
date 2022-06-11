@@ -1,5 +1,6 @@
 from pydantic import BaseSettings
 
+
 class Settings(BaseSettings):
     database_hostname:str
     database_port: str
@@ -15,3 +16,17 @@ class Settings(BaseSettings):
         env_file = ".env"
 
 settings = Settings()
+
+
+
+class Pictures(BaseSettings):
+    cloud_api_key:str
+    cloud_api_secret:str
+    cloud_name:str
+
+    class Config:
+        env_file = ".env"
+
+pictures = Pictures()
+
+
