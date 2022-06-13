@@ -1,9 +1,8 @@
 
-from cProfile import Profile
 from typing import Optional
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
-from fastapi import UploadFile,File,Form
+
 
 from app.models import User   
 
@@ -11,9 +10,13 @@ class PostBase(BaseModel):
     title: str 
     content: str
     published: bool = True
+    category: str
 
-class PostCreate(PostBase):
-    pass
+class PostCreate(BaseModel):
+    title: Optional [str] 
+    content: Optional [str]
+    published: bool = True
+    category: Optional [str]
 
 
 class UserOut(BaseModel):
@@ -35,6 +38,17 @@ class Post(PostBase):
     owner: UserOut
     class Config:
         orm_mode = True
+
+class PostUpdate(PostCreate):
+    id: int
+    created_at: datetime 
+    owner_id:int
+    owner: UserOut
+    class Config:
+        orm_mode = True
+
+
+
 
 class UserCreate(BaseModel):
     email: EmailStr 
