@@ -3,7 +3,6 @@ from typing import Optional
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
 
-
 from app.models import User   
 
 class PostBase(BaseModel):
@@ -24,7 +23,7 @@ class UserOut(BaseModel):
     email: EmailStr
     firstName: str
     lastName: str
-    profileImage: str
+    # profileImage: str
 
     class Config:
         orm_mode = True
@@ -51,7 +50,7 @@ class PostUpdate(PostCreate):
 
 
 class UserCreate(BaseModel):
-    email: EmailStr 
+    email: EmailStr
     password:str
     confirmPassword:str
     firstName:str
