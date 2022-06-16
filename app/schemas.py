@@ -27,6 +27,11 @@ class UserOut(BaseModel):
     class Config:
         orm_mode = True
 
+class GetUser(UserOut):
+    profileImage : str
+
+    class Config:
+        orm_mode = True
 
 
 class Post(PostBase):

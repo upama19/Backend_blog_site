@@ -63,7 +63,7 @@ async def upload_photo(id:int,profileImage:UploadFile=File(...),db: Session = De
 
 
 
-@router.get('/user/{id}', response_model=schemas.UserOut)
+@router.get('/user/{id}', response_model=schemas.GetUser)
 def get_user(id:int,db: Session = Depends(get_db) ):
     user = db.query(models.User).filter(models.User.id == id).first()
 
