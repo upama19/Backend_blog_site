@@ -2,7 +2,6 @@
 from typing import Optional
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
-from fastapi import File
 
 from app.models import User   
 
@@ -50,7 +49,7 @@ class PostUpdate(PostCreate):
 
 
 class UserCreate(BaseModel):
-    email: EmailStr 
+    email: EmailStr
     password:str
     confirmPassword:str
     firstName:str
