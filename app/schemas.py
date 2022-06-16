@@ -2,7 +2,7 @@
 from typing import Optional
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
-
+from fastapi import File
 
 from app.models import User   
 
@@ -23,8 +23,7 @@ class UserOut(BaseModel):
     id:int
     email: EmailStr
     firstName: str
-    lastName: str
-    profileImage: str
+    lastName: str 
 
     class Config:
         orm_mode = True

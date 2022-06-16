@@ -21,7 +21,7 @@ cloudinary.config(
 )
 
 @router.post("/register", status_code=status.HTTP_201_CREATED, response_model=schemas.UserOut)
-def create_user(user: schemas.UserCreate,db: Session = Depends(get_db)):
+def create_user(user: schemas.UserCreate ,db: Session = Depends(get_db)):
     print(user)
     hashed_password = utils.hash(user.password)
     user.password = hashed_password
@@ -29,6 +29,7 @@ def create_user(user: schemas.UserCreate,db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail =f"Your password doesn't match" )
 
     user.confirmPassword = user.password  
+
     # print(user.profileIamge.filename)
     # result =await cloudinary.uploader.upload(user.profileIamge.file)
     # url = result.get("url")
@@ -42,7 +43,7 @@ def create_user(user: schemas.UserCreate,db: Session = Depends(get_db)):
     db.refresh(new_user)
 
     return new_user
-@router.patch("/upload/{id}", status_code=status.HTTP_201_CREATED)
+@router.post("/upload/{id}", status_code=status.HTTP_201_CREATED)
 async def upload_photo(id:int,profileImage:UploadFile=File(...),db: Session = Depends(get_db)):
 
     result = cloudinary.uploader.upload(profileImage.file)
