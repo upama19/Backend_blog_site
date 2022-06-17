@@ -107,7 +107,7 @@ async def forgot_password(user: schemas.ForgotPasword,db: Session = Depends(get_
     print(reset_code)    
 
 
-    return {"messgae":"we have send email to reset your password"}
+    return {"message":"we have send email to reset your password"}
 
 @router.patch('/user/forgot_password/{reset_code}')
 def reset_password(reset_code:str,password:schemas.Password,db: Session = Depends(get_db)):
