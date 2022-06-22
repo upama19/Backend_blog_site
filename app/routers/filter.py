@@ -36,17 +36,18 @@ def filter_published(published : bool, db: Session = Depends(get_db), limit:int 
     search = published
     # found_user = db.query(models.User).filter(models.User.id == id).first()
     print(search)
-    found =  db.query(models.User, models.Post).filter((models.User.id == models.Post.owner_id))
+    found =  db.query(models.Post).filter((current_user.id == models.Post.owner_id))
     user_found = found.all()
     posts=  found.filter(models.Post.published == published).all()
 
 
     
-    final = dict(posts[1]).get('Post')
-    print(final)
+    # final = dict(posts[1]).get('Post')
+    # print(final)
 
-    
-
+    # for post in posts:
+    #     hi =((post.Post))
+    #     print(type(hi))
 
     # for i in posts:
     #     final =  (dict (posts[1]))
