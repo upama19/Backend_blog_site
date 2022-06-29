@@ -98,7 +98,7 @@ async def forgot_password(user: schemas.ForgotPasword,db: Session = Depends(get_
     <div style="width:100%;font-family: monospace;">
 
         <p>Someone has requested a link to reset your password. If you requested this, you can change your password through the button.  
-        <a href="http://127.0.0.1:8000/user/forgot_password/{0:}" style="box-sizing:border-box;border-color:#1f8feb;text-decoration:none;background-color:#1f8feb;border:solid 1px #1f8feb;border-radius:4px;color:#ffffff;font-size:16px;font-weight:bold;margin:0;padding:12px 24px;text-transform:capitialize;display:inline-block\"target=\"_blank\">Reset your password</a>\n <p>If you did't request this,you can ignore this email.</p>
+        <a href="http://127.0.0.1:3000/forgotPassword/resetPassword?reset_code={0:}" style="box-sizing:border-box;border-color:#1f8feb;text-decoration:none;background-color:#1f8feb;border:solid 1px #1f8feb;border-radius:4px;color:#ffffff;font-size:16px;font-weight:bold;margin:0;padding:12px 24px;text-transform:capitialize;display:inline-block\"target=\"_blank\">Reset your password</a>\n <p>If you did't request this,you can ignore this email.</p>
         </div>
         </body>
         </html>""".format(reset_code)
