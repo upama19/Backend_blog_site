@@ -1,4 +1,5 @@
 
+from turtle import pos
 from fastapi import FastAPI, Response, status, HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
 from typing import List, Optional
@@ -15,9 +16,12 @@ router = APIRouter(
 def get_Post(db: Session = Depends(get_db), limit:int = 10, skip: int = 0, search: Optional[str]=""):
     # cursor.execute("""SELECT * FROM posts""")
     # posts = cursor.fetchall()
+    posts = db.query(models.Post).filter(models.Post.published == True and models.Post.title.contains(search)).limit(limit).offset(skip)
+    post = posts.all()
+    # if post.published == True:
+    return post
 
-    posts = db.query(models.Post).filter(models.Post.title.contains(search)).limit(limit).offset(skip).all()
-    return posts
+
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.Post)
 def create_posts(post:schemas.PostCreate, db: Session = Depends(get_db), current_user: int= Depends(oauth2.get_current_user)):
@@ -47,6 +51,8 @@ def get_post(id: int, db: Session = Depends(get_db)):
         # return {'message':f"post with {id} was not found." }
 
     return post
+
+
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
