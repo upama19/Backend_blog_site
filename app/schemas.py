@@ -3,6 +3,8 @@ from typing import Optional
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
 
+from sqlalchemy import null
+
 from app.models import User   
 
 class PostBase(BaseModel):
@@ -17,7 +19,9 @@ class PostCreate(BaseModel):
     published: bool = True
     category: Optional [str]
 
-
+# register garne bela profileImage rakhna mildaina
+# tara malai profile Image getAllPosts garne bela chainxa
+# so conflicting bhayo...
 class UserOut(BaseModel):
     id:int
     email: EmailStr
@@ -61,7 +65,6 @@ class UserCreate(BaseModel):
     firstName:str
     lastName:str
     phoneNumber:int
-
     
 
 

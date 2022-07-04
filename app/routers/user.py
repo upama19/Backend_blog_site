@@ -43,7 +43,7 @@ def create_user(user: schemas.UserCreate ,db: Session = Depends(get_db)):
     db.refresh(new_user)
 
     return new_user
-@router.post("/upload/{id}", status_code=status.HTTP_201_CREATED)
+@router.patch("/upload/{id}", status_code=status.HTTP_201_CREATED)
 async def upload_photo(id:int,profileImage:UploadFile=File(...),db: Session = Depends(get_db)):
 
     result = cloudinary.uploader.upload(profileImage.file)
