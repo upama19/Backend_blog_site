@@ -1,6 +1,6 @@
 
 from typing import Optional
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, conint
 from datetime import datetime
 
 from sqlalchemy import null
@@ -19,7 +19,7 @@ class PostCreate(BaseModel):
     published: bool = True
     category: Optional [str]
 
-# register garne bela profileImage rakhna mildaina
+# register garne bela profileImage rakhna mildaina 
 # tara malai profile Image getAllPosts garne bela chainxa
 # so conflicting bhayo...
 class UserOut(BaseModel):
@@ -27,7 +27,6 @@ class UserOut(BaseModel):
     email: EmailStr
     firstName: str
     lastName: str 
-
     class Config:
         orm_mode = True
 
@@ -42,9 +41,18 @@ class Post(PostBase):
     id: int
     created_at: datetime 
     owner_id:int
-    owner: UserOut
+    owner: GetUser
     class Config:
         orm_mode = True
+
+
+class PostLike(BaseModel):
+    Post: Post
+    likes: int 
+
+    class Config:
+        orm_mode = True
+
 
 class PostUpdate(PostCreate):
     id: int
@@ -89,6 +97,11 @@ class Password(BaseModel):
     email:Optional[EmailStr] = None
     password:str
     confirmPassword:Optional[str] = None
+
+class Vote(BaseModel):
+    post_id:int
+    dir: conint(le=1)
+
 
 
 

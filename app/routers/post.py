@@ -1,6 +1,6 @@
 
-from turtle import pos
 from fastapi import FastAPI, Response, status, HTTPException, Depends, APIRouter
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from typing import List, Optional
 
@@ -12,14 +12,20 @@ router = APIRouter(
     tags=['Posts']
 )
 
-@router.get("/", response_model=List[schemas.Post])
+@router.get("/", response_model=List[schemas.PostLike])
+
+# @router.get("/")
 def get_Post(db: Session = Depends(get_db), limit:int = 10, skip: int = 0, search: Optional[str]=""):
     # cursor.execute("""SELECT * FROM posts""")
     # posts = cursor.fetchall()
-    posts = db.query(models.Post).filter(models.Post.published == True and models.Post.title.contains(search)).limit(limit).offset(skip)
-    post = posts.all()
+    # posts = db.query(models.Post).filter(models.Post.published == True and models.Post.title.contains(search)).limit(limit).offset(skip)
+    # post = posts.all()
+
+    results = db.query(models.Post, func.count(models.Vote.post_id).label("likes")).join(models.Vote, models.Vote.post_id == models.Post.id, isouter = True).group_by(models.Post.id).filter(models.Post.published == True and models.Post.title.contains(search)).limit(limit).offset(skip).all()
+
+
     # if post.published == True:
-    return post
+    return results
 
 
 
@@ -36,21 +42,21 @@ def create_posts(post:schemas.PostCreate, db: Session = Depends(get_db), current
     db.refresh(new_post)
     return new_post
 
-@router.get("/{id}" ,response_model= schemas.Post)
+@router.get("/{id}" ,response_model= schemas.PostLike)
 def get_post(id: int, db: Session = Depends(get_db)):
 
     # cursor.execute("""SELECT * FROM posts WHERE id = %s """, (str(id),))
     # post = cursor.fetchone()
-    post = db.query(models.Post).filter(models.Post.id == id).first()
+    results = db.query(models.Post, func.count(models.Vote.post_id).label("likes")).join(models.Vote, models.Vote.post_id == models.Post.id, isouter = True).group_by(models.Post.id).filter(models.Post.id == id).first()
     # print(post)
 
 
-    if not post:
+    if not results:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with {id} was not found.")
         # response.status_code = status.HTTP_404_NOT_FOUND
         # return {'message':f"post with {id} was not found." }
 
-    return post
+    return results
 
 
 
