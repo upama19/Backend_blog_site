@@ -23,7 +23,6 @@ class UserOut(BaseModel):
     email: EmailStr
     firstName: str
     lastName: str 
-    profileImage: str
 
     class Config:
         orm_mode = True
