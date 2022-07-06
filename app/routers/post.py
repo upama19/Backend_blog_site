@@ -1,4 +1,6 @@
 
+from random import randrange
+from re import U
 from fastapi import FastAPI, Response, status, HTTPException, Depends, APIRouter
 from sqlalchemy import func
 from sqlalchemy.orm import Session
@@ -15,17 +17,34 @@ router = APIRouter(
 @router.get("/", response_model=List[schemas.PostLike])
 
 # @router.get("/")
-def get_Post(db: Session = Depends(get_db), limit:int = 10, skip: int = 0, search: Optional[str]=""):
+async def get_Post(db: Session = Depends(get_db), limit:int = 10, skip: int = 0, search: Optional[str]=""):
     # cursor.execute("""SELECT * FROM posts""")
     # posts = cursor.fetchall()
     # posts = db.query(models.Post).filter(models.Post.published == True and models.Post.title.contains(search)).limit(limit).offset(skip)
     # post = posts.all()
 
     results = db.query(models.Post, func.count(models.Vote.post_id).label("likes")).join(models.Vote, models.Vote.post_id == models.Post.id, isouter = True).group_by(models.Post.id).filter(models.Post.published == True and models.Post.title.contains(search)).limit(limit).offset(skip).all()
+    
+
+    a=[]
+    u=[]
+    for i in range(len(results)):
+        post = results[i]._asdict()
+        hello = post['Post'].__dict__
+        hello['likes'] = post['likes']
+        a.append(hello)
+
+ 
+
+    for i in range(len(results)):
+        final = db.query(models.User).filter(models.User.id == a[i]['owner_id']).first()
+        y =(final.__dict__)
+        b =a[i]
+        b['profileImage'] = y['profileImage']
+        u.append(b)
 
 
-    # if post.published == True:
-    return results
+    return u
 
 
 
@@ -42,21 +61,24 @@ def create_posts(post:schemas.PostCreate, db: Session = Depends(get_db), current
     db.refresh(new_post)
     return new_post
 
-@router.get("/{id}" ,response_model= schemas.PostLike)
+@router.get("/{id}" ,response_model= schemas.PostLikeGet)
 def get_post(id: int, db: Session = Depends(get_db)):
+
 
     # cursor.execute("""SELECT * FROM posts WHERE id = %s """, (str(id),))
     # post = cursor.fetchone()
     results = db.query(models.Post, func.count(models.Vote.post_id).label("likes")).join(models.Vote, models.Vote.post_id == models.Post.id, isouter = True).group_by(models.Post.id).filter(models.Post.id == id).first()
-    # print(post)
-
-
+    
     if not results:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with {id} was not found.")
         # response.status_code = status.HTTP_404_NOT_FOUND
         # return {'message':f"post with {id} was not found." }
 
-    return results
+    post = results._asdict()
+    hello = post['Post'].__dict__
+    hello['likes'] = post['likes']
+
+    return hello
 
 
 

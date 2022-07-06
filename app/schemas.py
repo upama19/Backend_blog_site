@@ -47,7 +47,27 @@ class Post(PostBase):
 
 
 class PostLike(BaseModel):
-    Post: Post
+    id: int
+    title: str 
+    content: str
+    published: bool = True
+    category: str
+    created_at: datetime 
+    owner_id:int
+    profileImage : str
+    likes: int 
+
+    class Config:
+        orm_mode = True
+
+class PostLikeGet(BaseModel):
+    id: int
+    title: str 
+    content: str
+    published: bool = True
+    category: str
+    created_at: datetime 
+    owner_id:int
     likes: int 
 
     class Config:
@@ -102,7 +122,9 @@ class Vote(BaseModel):
     post_id:int
     dir: conint(le=1)
 
-
+class Bookmark(BaseModel):
+    post_id:int
+    dir: conint(le=1)
 
 
 
