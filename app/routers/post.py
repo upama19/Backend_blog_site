@@ -61,7 +61,7 @@ def create_posts(post:schemas.PostCreate, db: Session = Depends(get_db), current
     db.refresh(new_post)
     return new_post
 
-@router.get("/{id}" ,response_model= schemas.PostLikeGet)
+@router.get("/{id}" ,response_model= schemas.PostLike)
 def get_post(id: int, db: Session = Depends(get_db)):
 
 
@@ -77,6 +77,9 @@ def get_post(id: int, db: Session = Depends(get_db)):
     post = results._asdict()
     hello = post['Post'].__dict__
     hello['likes'] = post['likes']
+    final = db.query(models.User).filter(models.User.id == hello['owner_id']).first()
+    y =(final.__dict__)
+    hello['profileImage'] = y['profileImage']
 
     return hello
 

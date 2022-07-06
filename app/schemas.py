@@ -60,20 +60,6 @@ class PostLike(BaseModel):
     class Config:
         orm_mode = True
 
-class PostLikeGet(BaseModel):
-    id: int
-    title: str 
-    content: str
-    published: bool = True
-    category: str
-    created_at: datetime 
-    owner_id:int
-    likes: int 
-
-    class Config:
-        orm_mode = True
-
-
 class PostUpdate(PostCreate):
     id: int
     created_at: datetime 
