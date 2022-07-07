@@ -23,8 +23,7 @@ async def get_Post(db: Session = Depends(get_db), limit:int = 10, skip: int = 0,
     # posts = db.query(models.Post).filter(models.Post.published == True and models.Post.title.contains(search)).limit(limit).offset(skip)
     # post = posts.all()
 
-    results = db.query(models.Post, func.count(models.Vote.post_id).label("likes")).join(models.Vote, models.Vote.post_id == models.Post.id, isouter = True).group_by(models.Post.id).filter(models.Post.published == True and models.Post.title.contains(search)).limit(limit).offset(skip).all()
-    
+    results = db.query(models.Post, func.count(models.Vote.post_id).label("likes")).join(models.Vote, models.Vote.post_id == models.Post.id, isouter = True).group_by(models.Post.id).filter(models.Post.published == True , models.Post.title.contains(search)).limit(limit).offset(skip).all()
 
     a=[]
     u=[]

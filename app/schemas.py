@@ -54,7 +54,7 @@ class PostLike(BaseModel):
     category: str
     created_at: datetime 
     owner_id:int
-    profileImage : str
+    profileImage : Optional [str]
     likes: int 
 
     class Config:
