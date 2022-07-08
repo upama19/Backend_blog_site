@@ -112,6 +112,15 @@ class Bookmark(BaseModel):
     post_id:int
     dir: conint(le=1)
 
+class BookmarkUser(BaseModel):
+    id: int
+    title: str 
+    content: str
+    published: bool = True
+    category: str
+    created_at: datetime 
+    owner_id:int
+    bookmarked: int 
 
 
    

@@ -1,6 +1,5 @@
 
 from random import randrange
-from re import U
 from fastapi import FastAPI, Response, status, HTTPException, Depends, APIRouter
 from sqlalchemy import func
 from sqlalchemy.orm import Session
